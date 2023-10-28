@@ -39,7 +39,7 @@ services:
     volumes:
       - nextcloud:/var/www/html:z,ro
     healthcheck:
-        test: curl --fail http://localhost/ocs/v2.php/apps/serverinfo/api/v1/info?format=json
+        test: curl --fail http://localhost
         interval: 5s
         retries: 3
         timeout: 10s
