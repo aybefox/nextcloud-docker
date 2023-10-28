@@ -27,11 +27,6 @@ services:
       - REDIS_HOST=redis
     env_file:
       - db.env
-    healthcheck:
-      test: curl --fail http://web:80/ocs/v2.php/apps/serverinfo/api/v1/info?format=json
-      interval: 5s
-      retries: 3
-      timeout: 10s
     depends_on:
       - db
       - redis
@@ -43,6 +38,11 @@ services:
       - 18080:80
     volumes:
       - nextcloud:/var/www/html:z,ro
+    healthcheck:
+        test: curl --fail http://localhost/ocs/v2.php/apps/serverinfo/api/v1/info?format=json
+        interval: 5s
+        retries: 3
+        timeout: 10s
     depends_on:
       - app
 
