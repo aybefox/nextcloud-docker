@@ -40,7 +40,7 @@ services:
       - nextcloud:/var/www/html:z,ro
     healthcheck:
         test: curl --fail http://localhost
-        interval: 5s
+        interval: 15s
         retries: 3
         timeout: 10s
     depends_on:
