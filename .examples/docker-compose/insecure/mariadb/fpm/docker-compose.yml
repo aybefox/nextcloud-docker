@@ -22,10 +22,11 @@ services:
     restart: always
     volumes:
       - nextcloud:/var/www/html:z
-      - data:/var/www/html/data:z
+      - nfs:/mnt/nfs:z
     environment:
       - MYSQL_HOST=db
       - REDIS_HOST=redis
+      - NEXTCLOUD_DATA_DIR=/mnt/nfs/data
     env_file:
       - db.env
     depends_on:
@@ -60,7 +61,7 @@ services:
 volumes:
   db:
   nextcloud:
-  data:
+  nfs:
       driver_opts:
         type: nfs
         o: addr=$NFS_HOST,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14
