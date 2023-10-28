@@ -22,6 +22,7 @@ services:
     restart: always
     volumes:
       - nextcloud:/var/www/html:z
+      - data:/var/www/html/data:z
     environment:
       - MYSQL_HOST=db
       - REDIS_HOST=redis
