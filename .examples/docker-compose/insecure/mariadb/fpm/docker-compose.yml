@@ -59,3 +59,8 @@ services:
 volumes:
   db:
   nextcloud:
+  data:
+      driver_opts:
+        type: nfs
+        o: addr=$NFS_HOST,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14
+        device: $NFS_DIR
