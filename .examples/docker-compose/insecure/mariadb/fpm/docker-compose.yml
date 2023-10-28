@@ -26,9 +26,9 @@ services:
     environment:
       - MYSQL_HOST=db
       - REDIS_HOST=redis
-      - NEXTCLOUD_DATA_DIR=/mnt/nfs/data
     env_file:
       - db.env
+      - nextcloud.env
     depends_on:
       - db
       - redis
@@ -41,19 +41,22 @@ services:
     volumes:
       - nextcloud:/var/www/html:z,ro
     healthcheck:
-        test: curl --fail http://localhost
-        interval: 15s
-        retries: 3
-        timeout: 10s
+      test: curl --fail http://localhost
+      interval: 15s
+      retries: 3
+      timeout: 10s
     depends_on:
       - app
 
   cron:
-    image: nextcloud:fpm-alpine
+    build: ./app
     restart: always
     volumes:
       - nextcloud:/var/www/html:z
+      - nfs:/mnt/nfs:z
     entrypoint: /cron.sh
+    env_file:
+      - nextcloud.env
     depends_on:
       - db
       - redis
@@ -62,7 +65,7 @@ volumes:
   db:
   nextcloud:
   nfs:
-      driver_opts:
-        type: nfs
-        o: addr=$NFS_HOST,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14
-        device: $NFS_DIR
+    driver_opts:
+      type: nfs
+      o: addr=$NFS_HOST,rw,noatime,rsize=8192,wsize=8192,tcp,timeo=14
+      device: $NFS_DIR
